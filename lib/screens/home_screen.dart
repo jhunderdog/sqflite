@@ -7,8 +7,6 @@ import 'package:intl/intl.dart';
 import 'add_note_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -66,12 +64,14 @@ class _HomeScreenState extends State<HomeScreen> {
             value: note.status == 1 ? true : false,
           ),
           onTap: () => Navigator.push(
-              context,
-              CupertinoPageRoute(
-                  builder: (_) => AddNoteScreen(
-                      // updateNoteList : _updateNoteList(),
-                      // note: note,
-                      ))),
+            context,
+            CupertinoPageRoute(
+              builder: (_) => AddNoteScreen(
+                updateNoteList: _updateNoteList(),
+                note: note,
+              ),
+            ),
+          ),
         ),
         Divider(height: 5.0, color: Colors.deepPurple, thickness: 2.0)
       ]),
@@ -85,8 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
-          Navigator.push(context,
-              CupertinoPageRoute(builder: (context) => AddNoteScreen()));
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => AddNoteScreen(
+                updateNoteList: _updateNoteList,
+              ),
+            ),
+          );
         },
         child: Icon(Icons.add),
       ),
@@ -98,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: CircularProgressIndicator(),
               );
             }
-            final int comlpleteNoteCount = snapshot.data!
+            final int comlpletedNoteCount = snapshot.data!
                 .where((Note note) => note.status == 1)
                 .toList()
                 .length;
@@ -124,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 10.0,
                         ),
                         Text(
-                          '$comlpleteNoteCount of ${snapshot.data.length}',
+                          '$comlpletedNoteCount of ${snapshot.data.length}',
                           style: TextStyle(
                             color: Colors.deepPurple,
                             fontSize: 20.0,
